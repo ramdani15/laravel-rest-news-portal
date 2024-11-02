@@ -1,0 +1,52 @@
+version: '3'
+services:
+    nginx:
+        platform: linux/arm64/v8
+        container_name: nginx-news-portal
+        image: nginx:alpine3.18-slim
+        command: [ "nginx", "-g", "daemon off;" ]
+        depends_on:
+            - app
+        links:
+            - app
+        working_dir: /var/www/html
+        volumes:
+            - ./docker/nginx/asset/:/etc/nginx/conf.d/
+            - ./docker/nginx/log:/var/log/nginx/:rw
+            - ./:/var/www/html:rw
+        env_file:
+            - ./docker/.env
+        ports:
+            - "${DOCKER_NGINX_PORT:-8080}:80"
+        logging:
+            options:
+                max-size: "1m"
+                max-file: "3"
+    app:
+        container_name: app-news-portal
+        build: ./docker/php
+        working_dir: /var/www/html
+        volumes:
+            - ./:/var/www/html:rw
+    postgres:
+        platform: "linux/amd64"
+        image: "postgres:14.1-alpine"
+        container_name: postgres-news-portal
+        volumes:
+            - "./docker/postgres/data:/var/lib/postgresql/data"
+        env_file:
+            - ./docker/.env
+        ports:
+            - "${DOCKER_POSTGRES_PORT:-5432}:5432"
+        restart: on-failure
+    pgadmin:
+        platform: "linux/amd64"
+        image: "dpage/pgadmin4:8.1"
+        container_name: pgadmin-news-portal
+        volumes:
+            - "./docker/pgadmin/data:/var/lib/pgadmin:z"
+        env_file:
+            - ./docker/.env
+        ports:
+            - "${DOCKER_PGADMIN_PORT:-82}:80"
+        restart: on-failure
