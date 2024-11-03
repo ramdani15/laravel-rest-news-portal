@@ -57,7 +57,7 @@ return [
                 |--------------------------------------------------------------------------
                 */
 
-                'title' => 'One Dashboard API V1 Swagger Documentation',
+                'title' => 'News Portal API V1 Swagger Documentation',
             ],
 
             'routes' => [

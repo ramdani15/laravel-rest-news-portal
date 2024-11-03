@@ -145,3 +145,12 @@ RESTful API for the News Portal, built with Laravel. Provides endpoints for mana
 - **Profile**:
   - `GET /api/v1/profile`: Get profile of the current user
   - `PATCH /api/v1/profile`: Update profile for the current user
+
+
+## Note
+
+- Admin credentials: 
+  - Email: `admin@news-portal.com`
+  - Password: `password`
+- Regenerate swagger: `php artisan l5-swagger:generate`
+- Code formatter: `sh pint.sh`
